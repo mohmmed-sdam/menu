@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+body {
+    margin: 0;
+    font-family: "Cairo", sans-serif;
+    background: #111;
+    color: white;
+}
+
+.menu {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    width: 70px;
+}
+
+.header h1 {
+    color: #ffcc33;
+    margin: 10px 0;
+}
+
+.header p {
+    font-size: 14px;
+    color: #ddd;
+}
+
+/* Sections */
+.section {
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-header h2 {
+    background: #eee;
+    color: black;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.section-header img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid orange;
+}
+
+/* List */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+ul li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #444;
+    padding: 8px 0;
+    font-size: 15px;
+}
+
+ul li span:last-child {
+    color: #ffcc33;
+}
