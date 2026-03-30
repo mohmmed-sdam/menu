@@ -275,6 +275,10 @@
             padding-inline-end: 8px;
         }
 
+        .item-label {
+            display: none;
+        }
+
         .price-col {
             width: 100px;
         }
@@ -446,6 +450,7 @@
             min-height: 44px;
             display: flex;
             align-items: center;
+            line-height: 1.6;
         }
 
         .order-note {
@@ -455,8 +460,18 @@
         }
 
         @media (max-width: 900px) {
+            body {
+                padding: 12px;
+            }
+
+            .menu-container {
+                padding: 18px 14px;
+                border-width: 3px;
+            }
+
             .sections-grid {
                 grid-template-columns: 1fr;
+                gap: 18px;
             }
 
             .brand-badge {
@@ -482,11 +497,15 @@
                 height: 145px;
             }
 
+            .section-head {
+                gap: 10px;
+            }
+
             .section-header {
                 font-size: 24px;
                 min-height: 54px;
-                margin-inline-start: -14px;
-                padding-inline-start: 30px;
+                margin-inline-start: -8px;
+                padding-inline-start: 24px;
             }
 
             .category-img,
@@ -514,6 +533,149 @@
 
             .location-row {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 8px;
+            }
+
+            .menu-container {
+                padding: 14px 10px;
+                border-width: 2px;
+                border-radius: 14px;
+            }
+
+            header {
+                margin-bottom: 18px;
+            }
+
+            .header-logo {
+                height: auto;
+                max-height: 190px;
+                border-radius: 8px;
+            }
+
+            .section-head {
+                align-items: center;
+                gap: 8px;
+            }
+
+            .section-header {
+                min-height: 0;
+                font-size: clamp(18px, 5.5vw, 24px);
+                padding: 10px 18px;
+                padding-inline-start: 20px;
+                margin-inline-start: -4px;
+            }
+
+            .category-img,
+            .category-img-placeholder {
+                width: 78px;
+                height: 78px;
+                border-width: 4px;
+            }
+
+            .menu-table-wrap {
+                max-height: none;
+                overflow: visible;
+            }
+
+            .menu-table,
+            .menu-table tbody {
+                display: block;
+            }
+
+            .menu-table thead {
+                display: none;
+            }
+
+            .menu-table tr {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                gap: 10px;
+                padding: 12px;
+                margin-bottom: 12px;
+                border: 1px solid #303030;
+                border-radius: 12px;
+                background: #202020;
+            }
+
+            .menu-table td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                width: 100% !important;
+                padding: 0;
+                border-bottom: 0;
+                text-align: right;
+            }
+
+            .item-col,
+            .price-col,
+            .calories-col,
+            .qty-col,
+            .price,
+            .calories {
+                width: 100%;
+            }
+
+            .item-col {
+                padding-inline-end: 0;
+            }
+
+            .item-name {
+                display: block;
+                font-size: 18px;
+            }
+
+            .item-name::before {
+                display: none;
+            }
+
+            .item-label {
+                display: inline-block;
+                color: #f1c40f;
+                font-weight: 700;
+                font-size: 13px;
+                flex-shrink: 0;
+            }
+
+            .price,
+            .calories {
+                font-size: 14px;
+            }
+
+            .qty-control {
+                margin-inline-start: auto;
+            }
+
+            .qty-btn {
+                width: 32px;
+                height: 32px;
+            }
+
+            .meal-qty {
+                width: 46px;
+                min-height: 32px;
+            }
+
+            .order-panel {
+                margin-top: 18px;
+                padding: 14px;
+            }
+
+            .order-title {
+                font-size: 20px;
+            }
+
+            .order-input,
+            .order-textarea,
+            .order-btn,
+            .location-btn {
+                font-size: 15px;
             }
         }
     </style>
@@ -555,9 +717,10 @@
                             @forelse($category->meals as $meal)
                                 <tr data-meal-name="{{ $meal->name }}" data-meal-price="{{ $meal->price }}">
                                     <td class="item-name item-col">{{ $meal->name }}</td>
-                                    <td class="price price-col">{{ number_format($meal->price, 2) }} SR</td>
-                                    <td class="calories calories-col">{{ $meal->calories }} kcal</td>
+                                    <td class="price price-col"><span class="item-label">السعر</span><span>{{ number_format($meal->price, 2) }} SR</span></td>
+                                    <td class="calories calories-col"><span class="item-label">السعرات</span><span>{{ $meal->calories }} kcal</span></td>
                                     <td class="qty-col">
+                                        <span class="item-label">الكمية</span>
                                         <div class="qty-control">
                                             <button type="button" class="qty-btn" data-action="minus">-</button>
                                             <input type="text" class="meal-qty" value="0" readonly>
@@ -601,30 +764,124 @@
         const sendBtn = document.getElementById('sendWhatsappBtn');
         const detectLocationBtn = document.getElementById('detectLocationBtn');
         const locationStatus = document.getElementById('locationStatus');
+        const manualLocationInput = document.getElementById('manualLocation');
         let customerLocationText = '-';
 
-        detectLocationBtn?.addEventListener('click', function () {
+        function setLocationStatus(message, focusManualInput = false) {
+            if (locationStatus) {
+                locationStatus.textContent = message;
+            }
+
+            if (focusManualInput) {
+                manualLocationInput?.focus();
+            }
+        }
+
+        function isSecureOriginForGeolocation() {
+            return window.isSecureContext
+                || ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+        }
+
+        async function getLocationPermissionState() {
+            if (!navigator.permissions?.query) {
+                return null;
+            }
+
+            try {
+                const result = await navigator.permissions.query({ name: 'geolocation' });
+                return result.state;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function requestBrowserLocation(options) {
+            return new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, options);
+            });
+        }
+
+        async function detectCurrentLocation() {
+            const attempts = [
+                {
+                    options: { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 },
+                    loadingMessage: 'جاري تحديد الموقع بدقة عالية...'
+                },
+                {
+                    options: { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 },
+                    loadingMessage: 'جارٍ إعادة المحاولة بطريقة أسرع لتحديد الموقع...'
+                }
+            ];
+
+            let lastError = null;
+
+            for (const attempt of attempts) {
+                setLocationStatus(attempt.loadingMessage);
+
+                try {
+                    return await requestBrowserLocation(attempt.options);
+                } catch (error) {
+                    lastError = error;
+
+                    if (error?.code === 1) {
+                        throw error;
+                    }
+                }
+            }
+
+            throw lastError;
+        }
+
+        detectLocationBtn?.addEventListener('click', async function () {
             if (!navigator.geolocation) {
                 customerLocationText = '-';
-                if (locationStatus) locationStatus.textContent = 'المتصفح لا يدعم تحديد الموقع.';
+                setLocationStatus('المتصفح لا يدعم تحديد الموقع. اكتب العنوان يدويًا في الحقل المخصص.', true);
                 return;
             }
 
-            if (locationStatus) locationStatus.textContent = 'جاري تحديد الموقع...';
+            if (!isSecureOriginForGeolocation()) {
+                customerLocationText = '-';
+                setLocationStatus('تحديد الموقع يحتاج رابطًا آمنًا HTTPS. إذا فتحت الموقع من رابط غير آمن فسيمنع المتصفح الوصول للموقع. اكتب موقعك يدويًا أو افتح النسخة الآمنة.', true);
+                return;
+            }
 
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    const lat = position.coords.latitude.toFixed(6);
-                    const lng = position.coords.longitude.toFixed(6);
-                    customerLocationText = `https://maps.google.com/?q=${lat},${lng}`;
-                    if (locationStatus) locationStatus.textContent = 'تم تحديد الموقع بنجاح.';
-                },
-                function () {
-                    customerLocationText = '-';
-                    if (locationStatus) locationStatus.textContent = 'تعذر تحديد الموقع. تأكد من السماح بالوصول للموقع.';
-                },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-            );
+            const permissionState = await getLocationPermissionState();
+            if (permissionState === 'denied') {
+                customerLocationText = '-';
+                setLocationStatus('تم رفض إذن الموقع في المتصفح. فعّل صلاحية الموقع لهذا الموقع ثم حاول مرة أخرى، أو اكتب العنوان يدويًا.', true);
+                return;
+            }
+
+            detectLocationBtn.disabled = true;
+
+            try {
+                const position = await detectCurrentLocation();
+                const lat = position.coords.latitude.toFixed(6);
+                const lng = position.coords.longitude.toFixed(6);
+                customerLocationText = `https://maps.google.com/?q=${lat},${lng}`;
+                setLocationStatus('تم تحديد الموقع بنجاح وإرفاق رابط الموقع الحالي.');
+            } catch (error) {
+                customerLocationText = '-';
+
+                if (error?.code === 1) {
+                    setLocationStatus('تم رفض الوصول للموقع. اسمح بصلاحية الموقع من المتصفح ثم أعد المحاولة، أو اكتب العنوان يدويًا.', true);
+                    return;
+                }
+
+                if (error?.code === 2) {
+                    setLocationStatus('تعذر جلب موقعك من الجهاز الآن. تأكد من تشغيل GPS والإنترنت ثم حاول مرة أخرى، أو اكتب العنوان يدويًا.', true);
+                    return;
+                }
+
+                if (error?.code === 3) {
+                    setLocationStatus('انتهت مهلة تحديد الموقع حتى بعد إعادة المحاولة. جرّب مرة أخرى في مكان مفتوح أو اكتب العنوان يدويًا.', true);
+                    return;
+                }
+
+                setLocationStatus('تعذر تحديد الموقع من المتصفح الحالي. اكتب عنوانك يدويًا في الحقل المخصص.', true);
+            } finally {
+                detectLocationBtn.disabled = false;
+            }
         });
 
         qtyButtons.forEach((btn) => {
