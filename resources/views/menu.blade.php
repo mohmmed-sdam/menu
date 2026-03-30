@@ -578,8 +578,11 @@
             }
 
             .menu-table-wrap {
-                max-height: none;
-                overflow: visible;
+                --mobile-row-h: 112px;
+                max-height: calc(var(--mobile-row-h) * 5);
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-inline: 2px;
             }
 
             .menu-table,
