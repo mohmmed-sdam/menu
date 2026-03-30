@@ -105,8 +105,56 @@
             gap: 24px;
         }
 
+        .sections-nav {
+            display: none;
+            margin-bottom: 18px;
+        }
+
+        .sections-nav-inner {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 4px 2px 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #595959 #1a1a1a;
+        }
+
+        .sections-nav-inner::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .sections-nav-inner::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 999px;
+        }
+
+        .sections-nav-btn {
+            border: 1px solid #4a4a4a;
+            background: #202020;
+            color: #f3f3f3;
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .sections-nav-btn.active {
+            background: #f1c40f;
+            color: #111;
+            border-color: #f1c40f;
+            transform: translateY(-1px);
+        }
+
         .section {
             margin-bottom: 6px;
+        }
+
+        .section-content {
+            display: block;
         }
 
         .section-head {
@@ -460,6 +508,15 @@
         }
 
         @media (max-width: 900px) {
+            .sections-nav {
+                display: block;
+                position: sticky;
+                top: 0;
+                z-index: 5;
+                background: linear-gradient(180deg, rgba(26, 26, 26, 0.98), rgba(26, 26, 26, 0.92));
+                padding-top: 6px;
+            }
+
             body {
                 padding: 12px;
             }
@@ -472,6 +529,14 @@
             .sections-grid {
                 grid-template-columns: 1fr;
                 gap: 18px;
+            }
+
+            .section {
+                margin-bottom: 0;
+            }
+
+            .section:not(.active-section) {
+                display: none;
             }
 
             .brand-badge {
@@ -691,9 +756,18 @@
     @if($categories->isEmpty())
         <div class="empty-state">لا توجد أقسام متاحة حالياً.</div>
     @else
+        <nav class="sections-nav" aria-label="الأقسام">
+            <div class="sections-nav-inner">
+                @foreach($categories as $category)
+                    <button type="button" class="sections-nav-btn @if($loop->first) active @endif" data-section-target="section-{{ $category->id }}">
+                        {{ $category->name }}
+                    </button>
+                @endforeach
+            </div>
+        </nav>
         <div class="sections-grid">
             @foreach($categories as $category)
-                <section class="section">
+                <section class="section @if($loop->first) active-section @endif" id="section-{{ $category->id }}">
                     <div class="section-head">
                         @if($category->image)
                             <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" class="category-img">
@@ -706,38 +780,40 @@
                             </div>
                         </div>
                     </div>
-                    <div class="menu-table-wrap">
-                        <table class="menu-table">
-                            <thead>
-                            <tr>
-                                <th class="item-col">الصنف</th>
-                                <th class="price-col">السعر</th>
-                                <th class="calories-col">السعرات</th>
-                                <th class="qty-col">الكمية</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($category->meals as $meal)
-                                <tr data-meal-name="{{ $meal->name }}" data-meal-price="{{ $meal->price }}">
-                                    <td class="item-name item-col">{{ $meal->name }}</td>
-                                    <td class="price price-col"><span class="item-label">السعر</span><span>{{ number_format($meal->price, 2) }} SR</span></td>
-                                    <td class="calories calories-col"><span class="item-label">السعرات</span><span>{{ $meal->calories }} kcal</span></td>
-                                    <td class="qty-col">
-                                        <span class="item-label">الكمية</span>
-                                        <div class="qty-control">
-                                            <button type="button" class="qty-btn" data-action="minus">-</button>
-                                            <input type="text" class="meal-qty" value="0" readonly>
-                                            <button type="button" class="qty-btn" data-action="plus">+</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
+                    <div class="section-content">
+                        <div class="menu-table-wrap">
+                            <table class="menu-table">
+                                <thead>
                                 <tr>
-                                    <td colspan="4" class="empty-state">لا توجد أصناف في هذا القسم.</td>
+                                    <th class="item-col">الصنف</th>
+                                    <th class="price-col">السعر</th>
+                                    <th class="calories-col">السعرات</th>
+                                    <th class="qty-col">الكمية</th>
                                 </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @forelse($category->meals as $meal)
+                                    <tr data-meal-name="{{ $meal->name }}" data-meal-price="{{ $meal->price }}">
+                                        <td class="item-name item-col">{{ $meal->name }}</td>
+                                        <td class="price price-col"><span class="item-label">السعر</span><span>{{ number_format($meal->price, 2) }} SR</span></td>
+                                        <td class="calories calories-col"><span class="item-label">السعرات</span><span>{{ $meal->calories }} kcal</span></td>
+                                        <td class="qty-col">
+                                            <span class="item-label">الكمية</span>
+                                            <div class="qty-control">
+                                                <button type="button" class="qty-btn" data-action="minus">-</button>
+                                                <input type="text" class="meal-qty" value="0" readonly>
+                                                <button type="button" class="qty-btn" data-action="plus">+</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="empty-state">لا توجد أصناف في هذا القسم.</td>
+                                    </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </section>
             @endforeach
@@ -768,6 +844,9 @@
         const detectLocationBtn = document.getElementById('detectLocationBtn');
         const locationStatus = document.getElementById('locationStatus');
         const manualLocationInput = document.getElementById('manualLocation');
+        const sectionNavButtons = Array.from(document.querySelectorAll('.sections-nav-btn'));
+        const sections = Array.from(document.querySelectorAll('.section'));
+        const mobileBreakpoint = window.matchMedia('(max-width: 900px)');
         let customerLocationText = '-';
 
         function setLocationStatus(message, focusManualInput = false) {
@@ -834,6 +913,72 @@
 
             throw lastError;
         }
+
+        function setActiveSection(sectionId, options = {}) {
+            const shouldScroll = options.scroll ?? true;
+
+            sections.forEach((section) => {
+                section.classList.toggle('active-section', section.id === sectionId);
+            });
+
+            sectionNavButtons.forEach((button) => {
+                const isActive = button.dataset.sectionTarget === sectionId;
+                button.classList.toggle('active', isActive);
+
+                if (isActive) {
+                    button.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            });
+
+            if (!mobileBreakpoint.matches || !shouldScroll) {
+                return;
+            }
+
+            const targetSection = document.getElementById(sectionId);
+            targetSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function syncSectionsLayout() {
+            if (!sections.length) {
+                return;
+            }
+
+            if (mobileBreakpoint.matches) {
+                const activeSection = document.querySelector('.section.active-section') || sections[0];
+                setActiveSection(activeSection.id, { scroll: false });
+                return;
+            }
+
+            sections.forEach((section) => section.classList.add('active-section'));
+            sectionNavButtons.forEach((button, index) => {
+                button.classList.toggle('active', index === 0);
+            });
+        }
+
+        sectionNavButtons.forEach((button) => {
+            button.addEventListener('click', function () {
+                const sectionId = this.dataset.sectionTarget;
+
+                if (!sectionId) {
+                    return;
+                }
+
+                if (mobileBreakpoint.matches) {
+                    setActiveSection(sectionId);
+                    return;
+                }
+
+                document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        if (typeof mobileBreakpoint.addEventListener === 'function') {
+            mobileBreakpoint.addEventListener('change', syncSectionsLayout);
+        } else if (typeof mobileBreakpoint.addListener === 'function') {
+            mobileBreakpoint.addListener(syncSectionsLayout);
+        }
+
+        syncSectionsLayout();
 
         detectLocationBtn?.addEventListener('click', async function () {
             if (!navigator.geolocation) {
