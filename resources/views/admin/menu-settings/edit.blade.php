@@ -1,13 +1,13 @@
 ﻿@extends('admin.layouts.app')
 
-@section('title', 'Menu Logo Settings')
-@section('page_title', 'Menu Logo Settings')
-@section('page_subtitle', 'Upload logo and configure WhatsApp orders for the public menu page')
+@section('title', 'إعدادات الشعار والمنيو')
+@section('page_title', 'إعدادات الشعار والمنيو')
+@section('page_subtitle', 'رفع الشعار وضبط طلبات واتساب في صفحة المنيو')
 
 @section('header_actions')
-    <a href="{{ url('/menu') }}" class="btn btn-outline-primary" target="_blank">
+    <a href="{{ route('public.menu') }}" class="btn btn-outline-primary" target="_blank">
         <i class="bi bi-box-arrow-up-right"></i>
-        Preview Menu
+        معاينة المنيو
     </a>
 @endsection
 
@@ -15,14 +15,14 @@
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
             <div class="page-card">
-                <div class="card-header">Menu Configuration</div>
+                <div class="card-header">إعدادات المنيو</div>
                 <div class="card-body p-4">
                     <form action="{{ route('menu-settings.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label for="whatsapp_number" class="form-label fw-semibold">WhatsApp Number</label>
+                            <label for="whatsapp_number" class="form-label fw-semibold">رقم واتساب</label>
                             <input
                                 type="text"
                                 class="form-control"
@@ -31,11 +31,11 @@
                                 value="{{ old('whatsapp_number', $menuSetting->whatsapp_number) }}"
                                 placeholder="9665XXXXXXXX"
                             >
-                            <small class="text-muted">Use international format without symbols. Example: 9665XXXXXXXX</small>
+                            <small class="text-muted">استخدم الصيغة الدولية بدون رموز. مثال: 9665XXXXXXXX</small>
                         </div>
 
                         <div class="mb-3">
-                            <label for="menu_logo" class="form-label fw-semibold">Menu Header Logo</label>
+                            <label for="menu_logo" class="form-label fw-semibold">شعار أعلى المنيو</label>
                             <input
                                 type="file"
                                 class="form-control"
@@ -43,15 +43,15 @@
                                 name="menu_logo"
                                 accept=".jpg,.jpeg,.png,.webp"
                             >
-                            <small class="text-muted">Allowed: JPG, PNG, WEBP. Maximum size: 2MB.</small>
+                            <small class="text-muted">المسموح: JPG وPNG وWEBP. الحد الأقصى: 2MB.</small>
                         </div>
 
                         @if ($menuSetting->menu_logo)
                             <div class="mb-4">
-                                <p class="mb-2 fw-semibold">Current Header Logo</p>
+                                <p class="mb-2 fw-semibold">الشعار الحالي</p>
                                 <img
                                     src="{{ Storage::url($menuSetting->menu_logo) }}"
-                                    alt="Menu Logo"
+                                    alt="شعار المنيو"
                                     style="width: 220px; height: 110px; object-fit: cover; border-radius: 10px; border: 1px solid #e5e7eb;"
                                 >
                             </div>
@@ -59,7 +59,7 @@
 
                         <button type="submit" class="btn btn-primary px-4">
                             <i class="bi bi-check2-circle"></i>
-                            Save Settings
+                            حفظ الإعدادات
                         </button>
                     </form>
                 </div>

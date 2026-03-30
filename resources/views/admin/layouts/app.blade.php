@@ -111,6 +111,14 @@
             min-width: 0;
         }
 
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
         .topbar {
             background: #fff;
             border-bottom: 1px solid #e8edf5;
@@ -153,6 +161,29 @@
             padding: .95rem 1.15rem;
         }
 
+        .admin-footer {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5eaf2;
+            text-align: center;
+            color: #64748b;
+            font-size: .9rem;
+        }
+
+        .admin-footer strong {
+            color: #0f172a;
+        }
+
+        .admin-footer a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .admin-footer a:hover {
+            color: #1d4ed8;
+        }
+
         .table-modern thead th {
             font-size: .8rem;
             text-transform: uppercase;
@@ -186,6 +217,15 @@
             display: inline-block;
         }
 
+        .table-responsive {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-responsive .btn,
+        .table-responsive .btn-sm {
+            white-space: nowrap;
+        }
+
         @media (max-width: 992px) {
             .admin-shell {
                 flex-direction: column;
@@ -195,11 +235,128 @@
                 width: 100%;
                 height: auto;
                 position: static;
+                padding: 1rem .85rem;
+                border-bottom: 1px solid rgba(255, 255, 255, .06);
+            }
+
+            .brand {
+                margin-bottom: .9rem;
+            }
+
+            .nav-section-title {
+                margin: 0 0 .55rem;
+            }
+
+            .admin-nav {
+                display: flex;
+                gap: .6rem;
+                overflow-x: auto;
+                padding-bottom: .3rem;
+                scrollbar-width: thin;
+            }
+
+            .admin-nav li {
+                flex: 0 0 auto;
+            }
+
+            .admin-nav a {
+                margin-bottom: 0;
+                white-space: nowrap;
             }
 
             .content-wrap,
             .topbar {
                 padding: 1rem;
+            }
+
+            .topbar {
+                gap: .9rem;
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .topbar-title {
+                font-size: 1rem;
+            }
+
+            .topbar-actions {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .topbar-actions > * {
+                flex: 1 1 100%;
+            }
+
+            .topbar-actions .btn,
+            .topbar-actions form,
+            .topbar-actions form .btn {
+                width: 100%;
+            }
+
+            .page-card {
+                border-radius: 12px;
+            }
+
+            .page-card .card-header {
+                padding: .9rem 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .content-wrap {
+                padding: .85rem;
+            }
+
+            .admin-sidebar {
+                padding: .85rem .75rem;
+            }
+
+            .brand {
+                padding-inline: .25rem;
+            }
+
+            .admin-nav a {
+                padding: .62rem .78rem;
+                font-size: .88rem;
+            }
+
+            .topbar {
+                padding: .85rem;
+            }
+
+            .topbar-subtitle {
+                font-size: .8rem;
+            }
+
+            .page-card .card-body {
+                padding: 1rem !important;
+            }
+
+            .table-modern td,
+            .table-modern th {
+                padding: .75rem .7rem;
+                font-size: .88rem;
+            }
+
+            .thumb {
+                width: 46px;
+                height: 46px;
+            }
+
+            .alert {
+                padding: .85rem .95rem;
+                font-size: .92rem;
+            }
+
+            .btn {
+                min-height: 42px;
+            }
+
+            .form-control,
+            .form-select {
+                min-height: 44px;
+                font-size: 16px;
             }
         }
     </style>
@@ -211,41 +368,41 @@
         <div class="brand">
             <div class="brand-badge"><i class="bi bi-shop"></i></div>
             <div>
-                <p class="brand-title">Restaurant Admin</p>
-                <div class="brand-sub">Menu Management</div>
+                <p class="brand-title">لوحة التحكم</p>
+                <div class="brand-sub">إدارة المنيو</div>
             </div>
         </div>
 
-        <div class="nav-section-title">Navigation</div>
+        <div class="nav-section-title">التنقل</div>
         <ul class="admin-nav">
             <li>
                 <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
                     <i class="bi bi-grid-3x3-gap"></i>
-                    <span>Categories</span>
+                    <span>الأقسام</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('meals.index') }}" class="{{ request()->routeIs('meals.*') ? 'active' : '' }}">
                     <i class="bi bi-cup-hot"></i>
-                    <span>Meals</span>
+                    <span>الوجبات</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('menu-settings.edit') }}" class="{{ request()->routeIs('menu-settings.*') ? 'active' : '' }}">
                     <i class="bi bi-image"></i>
-                    <span>Menu Logo</span>
+                    <span>شعار المنيو</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.password.edit') }}" class="{{ request()->routeIs('admin.password.*') ? 'active' : '' }}">
                     <i class="bi bi-shield-lock"></i>
-                    <span>Change Password</span>
+                    <span>تغيير كلمة المرور</span>
                 </a>
             </li>
             <li>
-                <a href="{{ url('/menu') }}" target="_blank">
+                <a href="{{ route('public.menu') }}" target="_blank">
                     <i class="bi bi-box-arrow-up-right"></i>
-                    <span>View Public Menu</span>
+                    <span>عرض المنيو</span>
                 </a>
             </li>
         </ul>
@@ -254,16 +411,16 @@
     <main class="admin-content">
         <header class="topbar">
             <div>
-                <h1 class="topbar-title">@yield('page_title', 'Dashboard')</h1>
-                <div class="topbar-subtitle">@yield('page_subtitle', 'Manage your restaurant menu and settings')</div>
+                <h1 class="topbar-title">@yield('page_title', 'الرئيسية')</h1>
+                <div class="topbar-subtitle">@yield('page_subtitle', 'إدارة المنيو والإعدادات')</div>
             </div>
-            <div class='d-flex align-items-center gap-2'>
+            <div class='topbar-actions'>
                 @yield('header_actions')
                 <form method='POST' action='{{ route('admin.logout') }}' class='m-0'>
                     @csrf
                     <button type='submit' class='btn btn-outline-danger btn-sm'>
                         <i class='bi bi-box-arrow-right'></i>
-                        Logout
+                        تسجيل الخروج
                     </button>
                 </form>
             </div>
@@ -285,6 +442,14 @@
             @endif
 
             @yield('content')
+
+            <footer class="admin-footer">
+                <div>جميع الحقوق محفوظة &copy; {{ now()->year }}</div>
+                <div>
+                    <strong>تنفيذ وبرمجة:</strong>
+                    <a href="https://wa.me/967776742913" target="_blank" rel="noopener noreferrer">محمد الهمداني - 776742913</a>
+                </div>
+            </footer>
         </div>
     </main>
 </div>

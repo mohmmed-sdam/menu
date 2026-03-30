@@ -33,4 +33,4 @@ Route::get('/', function () {
     $menuSetting = MenuSetting::query()->first();
 
     return view('menu', compact('categories', 'menuSetting'));
-});
+})->name('public.menu');

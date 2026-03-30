@@ -507,6 +507,34 @@
             font-size: 13px;
         }
 
+        .site-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #303030;
+            text-align: center;
+            color: #bdbdbd;
+        }
+
+        .site-footer-copy {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .site-footer-credit {
+            font-size: 14px;
+            color: #f1c40f;
+            font-weight: 700;
+        }
+
+        .site-footer-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .site-footer-link:hover {
+            color: #ffd54a;
+        }
+
         @media (max-width: 900px) {
             .sections-nav {
                 display: block;
@@ -834,6 +862,14 @@
             <button id="sendWhatsappBtn" type="button" class="order-btn">إرسال الطلب عبر واتساب</button>
             <div class="order-note">اختر الكمية من كل صنف ثم اضغط إرسال الطلب.</div>
         </section>
+
+        <footer class="site-footer">
+            <div class="site-footer-copy">جميع الحقوق محفوظة &copy; {{ now()->year }}</div>
+            <div class="site-footer-credit">
+                تنفيذ وبرمجة:
+                <a href="https://wa.me/967776742913" target="_blank" rel="noopener noreferrer" class="site-footer-link">محمد الهمداني - 776742913</a>
+            </div>
+        </footer>
     @endif
 </div>
 <script>
