@@ -508,31 +508,123 @@
         }
 
         .site-footer {
-            margin-top: 24px;
-            padding-top: 16px;
-            border-top: 1px solid #303030;
-            text-align: center;
-            color: #bdbdbd;
+            margin-top: 36px;
+            border-top: 1px solid #2e2e2e;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0));
+            border-radius: 18px;
+            padding: 40px 36px;
+            color: #d3d3d3;
         }
 
-        .site-footer-copy {
-            font-size: 13px;
-            margin-bottom: 6px;
+        .site-footer__inner {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            gap: 28px;
+            align-items: center;
         }
 
-        .site-footer-credit {
+        .site-footer__meta {
+            display: grid;
+            gap: 14px;
+            text-align: right;
+            justify-items: end;
+        }
+
+        .site-footer__item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 24px;
+        }
+
+        .site-footer__icon {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 18px;
+            color: #e0b42f;
+            opacity: 0.95;
+        }
+
+        .site-footer__text {
             font-size: 14px;
-            color: #f1c40f;
+            line-height: 1.8;
+            letter-spacing: 0.1px;
+            color: #d7d7d7;
+        }
+
+        .site-footer__text--muted {
+            color: #a8a8a8;
+            font-size: 13px;
+        }
+
+        .site-footer__brand {
+            color: #f2c647;
             font-weight: 700;
         }
 
-        .site-footer-link {
-            color: inherit;
-            text-decoration: none;
+        .site-footer__contacts {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 10px;
+            min-width: 250px;
+            justify-items: start;
         }
 
-        .site-footer-link:hover {
-            color: #ffd54a;
+        .site-footer__link {
+            text-decoration: none;
+            color: #f2f2f2;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            padding: 11px 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            direction: ltr;
+            unicode-bidi: isolate;
+            font-weight: 700;
+            transition: border-color 240ms ease, background-color 240ms ease, color 240ms ease, transform 240ms ease, box-shadow 240ms ease;
+        }
+
+        .site-footer__phone {
+            direction: ltr;
+            unicode-bidi: bidi-override;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        .site-footer__link-icon {
+            width: 16px;
+            height: 16px;
+            flex: 0 0 16px;
+            color: #f2c647;
+        }
+
+        .site-footer__link:hover {
+            border-color: #f2c647;
+            background: rgba(242, 198, 71, 0.11);
+            color: #fff8dc;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+        }
+
+        .site-footer__link:focus-visible {
+            outline: 2px solid #f2c647;
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .site-footer__link {
+                transition: none;
+            }
+
+            .site-footer__link:hover {
+                transform: none;
+                box-shadow: none;
+            }
         }
 
         @media (max-width: 900px) {
@@ -588,6 +680,25 @@
 
             .header-logo {
                 height: 145px;
+            }
+
+            .site-footer {
+                padding: 32px 20px;
+                border-radius: 14px;
+            }
+
+            .site-footer__inner {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .site-footer__meta {
+                justify-items: start;
+                text-align: right;
+            }
+
+            .site-footer__contacts {
+                min-width: 0;
             }
 
             .section-head {
@@ -863,13 +974,164 @@
             <div class="order-note">اختر الكمية من كل صنف ثم اضغط إرسال الطلب.</div>
         </section>
 
-        <footer class="site-footer">
-            <div class="site-footer-copy">جميع الحقوق محفوظة &copy; {{ now()->year }}</div>
-            <div class="site-footer-credit">
-                تنفيذ وبرمجة:
-                <a href="https://wa.me/967776742913" target="_blank" rel="noopener noreferrer" class="site-footer-link">محمد الهمداني - 776742913</a>
-            </div>
-        </footer>
+        <footer class="im-footer" role="contentinfo">
+  <style>
+    .im-footer {
+      direction: rtl;
+      margin-top: 48px;
+      padding: 0 16px 24px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .im-footer__inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      direction: ltr;
+      align-items: center;
+      gap: 32px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px);
+    }
+
+    /* RIGHT SIDE */
+    .im-footer__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      direction: rtl;
+      justify-self: end;
+      text-align: right;
+      align-items: flex-end;
+    }
+
+    .im-footer__copyright {
+      color: #94a3b8;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .im-footer__developer {
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .im-footer__brand {
+      color: #facc15;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .im-footer__brand:hover {
+      color: #fde047;
+    }
+
+    /* LEFT SIDE */
+    .im-footer__contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-self: start;
+      align-items: flex-start;
+    }
+
+    .im-footer__link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.25s;
+      font-size: 14px;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    .im-footer__phone {
+      direction: ltr;
+      unicode-bidi: bidi-override;
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+    }
+
+    .im-footer__link:hover {
+      transform: translateY(-2px);
+      border-color: #facc15;
+      color: #fde047;
+    }
+
+    .im-footer__icon {
+      width: 16px;
+      height: 16px;
+      color: #facc15;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .im-footer__inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .im-footer__meta {
+        align-items: center;
+        justify-self: center;
+      }
+
+      .im-footer__contacts {
+        align-items: center;
+        justify-self: center;
+      }
+    }
+  </style>
+
+  <div class="im-footer__inner">
+
+    <!-- CONTACT -->
+    <div class="im-footer__contacts">
+      <a href="https://wa.me/967776742913" class="im-footer__link">
+        <svg class="im-footer__icon" viewBox="0 0 24 24" fill="none">
+          <path d="M7 19L8 16C7 14 6 13 6 11C6 8 9 5 12 5C16 5 19 8 19 11C19 15 16 18 12 18C11 18 10 18 9 17L7 19Z" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span class="im-footer__phone">+967 776 742 913</span>
+      </a>
+
+      <a href="https://wa.me/967777234341" class="im-footer__link">
+        <svg class="im-footer__icon" viewBox="0 0 24 24" fill="none">
+          <path d="M7 19L8 16C7 14 6 13 6 11C6 8 9 5 12 5C16 5 19 8 19 11C19 15 16 18 12 18C11 18 10 18 9 17L7 19Z" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span class="im-footer__phone">+967 777 234 341</span>
+      </a>
+    </div>
+
+    <!-- META -->
+    <div class="im-footer__meta">
+      <div class="im-footer__copyright">
+        © 2026 جميع الحقوق محفوظة
+      </div>
+
+      <div class="im-footer__developer">
+        تصميم وتطوير:
+        <a href="" class="im-footer__brand">
+          شركة IM التقنية
+        </a>
+      </div>
+    </div>
+
+  </div>
+</footer>
     @endif
 </div>
 <script>

@@ -163,7 +163,7 @@
 
         .admin-footer {
             margin-top: 1.25rem;
-            padding-top: 1rem;
+            padding: 1rem 0 .2rem;
             border-top: 1px solid #e5eaf2;
             text-align: center;
             color: #64748b;
@@ -182,6 +182,27 @@
 
         .admin-footer a:hover {
             color: #1d4ed8;
+        }
+
+        .admin-footer-contacts {
+            margin-top: .65rem;
+            display: flex;
+            flex-direction: column;
+            gap: .45rem;
+            align-items: center;
+        }
+
+        .admin-footer-contacts a {
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 220px;
+            padding: .55rem 1rem;
+            border: 1px solid #d8e2f0;
+            border-radius: 999px;
+            background: #f8fbff;
         }
 
         .table-modern thead th {
@@ -444,10 +465,13 @@
             @yield('content')
 
             <footer class="admin-footer">
-                <div>جميع الحقوق محفوظة &copy; {{ now()->year }}</div>
+                <div>&copy; 2026 جميع الحقوق محفوظة</div>
                 <div>
-                    <strong>تنفيذ وبرمجة:</strong>
-                    <a href="https://wa.me/967776742913" target="_blank" rel="noopener noreferrer">محمد الهمداني - 776742913</a>
+                    <strong>تصميم وتطوير:</strong> شركة IM التقنية
+                </div>
+                <div class="admin-footer-contacts">
+                    <a href="https://wa.me/967776742913" target="_blank" rel="noopener noreferrer">+967 776 742 913</a>
+                    <a href="https://wa.me/967777234341" target="_blank" rel="noopener noreferrer">+967 777 234 341</a>
                 </div>
             </footer>
         </div>
