@@ -1086,11 +1086,13 @@
       }
 
       .im-footer__meta {
+        order: 1;
         align-items: center;
         justify-self: center;
       }
 
       .im-footer__contacts {
+        order: 2;
         align-items: center;
         justify-self: center;
       }
